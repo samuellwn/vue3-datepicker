@@ -7,6 +7,7 @@
       :locale="locale"
       :upperLimit="to"
       :lowerLimit="from"
+      :weekdays="onlyWeekdays ? [1, 2, 3, 4, 5] : [0, 1 , 2, 3, 4, 5, 6]"
     />
   </div>
   <div>
@@ -31,12 +32,16 @@
       placeholder="disabled"
     />
   </div>
+  <div>
+    <input id="onlyWeekdays" type="checkbox" v-model="onlyWeekdays" />
+    <label for="onlyWeekdays">Only Weekdays</label>
+  </div>
 </template>
 
 <script>
 import Datepicker from './datepicker/Datepicker.vue'
 import { defineComponent } from 'vue'
-import { ru } from 'date-fns/locale'
+import { ru, enUS } from 'date-fns/locale'
 
 export default defineComponent({
   name: 'App',
@@ -48,10 +53,11 @@ export default defineComponent({
       selected: null,
       from: null,
       to: null,
+      onlyWeekdays: false,
     }
   },
   computed: {
-    locale: () => ru,
+    locale: () => enUS,
   },
   watch: {
     selected: (value) => console.log(value),

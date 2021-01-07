@@ -33,6 +33,7 @@ import {
   endOfMonth,
   isValid,
 } from 'date-fns'
+import { isEnabled } from './util'
 import PickerPopup from './PickerPopup.vue'
 import { formatWithOptions } from 'date-fns/fp'
 
@@ -74,6 +75,10 @@ export default defineComponent({
       type: Date as PropType<Date>,
       required: false,
     },
+    weekdays: {
+      type: Array as PropType<Array<0 | 1 | 2 | 3 | 4 | 5 | 6>>,
+      required: false,
+    },
   },
   setup(props, { emit }) {
     const from = computed(() => startOfYear(props.pageDate))
@@ -85,17 +90,6 @@ export default defineComponent({
       })(props.format)
     )
 
-    const isEnabled = (
-      target: Date,
-      lower: Date | undefined,
-      upper: Date | undefined
-    ): boolean => {
-      if (!lower && !upper) return true
-      if (lower && isBefore(target, startOfMonth(lower))) return false
-      if (upper && isAfter(target, endOfMonth(upper))) return false
-      return true
-    }
-
     const months = computed(() =>
       eachMonthOfInterval({
         start: from.value,
@@ -105,7 +99,7 @@ export default defineComponent({
         display: format.value(value),
         key: format.value(value),
         selected: props.selected && isSameMonth(props.selected, value),
-        disabled: !isEnabled(value, props.lowerLimit, props.upperLimit),
+        disabled: !isEnabled(value, props.lowerLimit, props.upperLimit, props.weekdays),
       }))
     )
 

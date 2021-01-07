@@ -17,6 +17,7 @@
       :selected="modelValue"
       :lowerLimit="lowerLimit"
       :upperLimit="upperLimit"
+      :weekdays="weekdays"
       @select="selectYear"
     />
     <month-picker
@@ -26,6 +27,7 @@
       @select="selectMonth"
       :lowerLimit="lowerLimit"
       :upperLimit="upperLimit"
+      :weekdays="weekdays"
       :format="monthListFormat"
       :headingFormat="monthHeadingFormat"
       :locale="locale"
@@ -38,6 +40,7 @@
       :weekStartsOn="weekStartsOn"
       :lowerLimit="lowerLimit"
       :upperLimit="upperLimit"
+      :weekdays="weekdays"
       :locale="locale"
       :weekdayFormat="weekdayFormat"
       @select="selectDay"
@@ -83,6 +86,13 @@ export default defineComponent({
      */
     lowerLimit: {
       type: Date,
+      required: false,
+    },
+    /**
+     * Days of week available for picking. 0 is Sunday, 1 is Monday, etc.
+     */
+    weekdays: {
+      type: Array,
       required: false,
     },
     /**
@@ -145,7 +155,7 @@ export default defineComponent({
     weekStartsOn: {
       type: Number,
       required: false,
-      default: 1,
+      default: 0,
       validator: (value: any) => [0, 1, 2, 3, 4, 5, 6].includes(value),
     },
     /**
