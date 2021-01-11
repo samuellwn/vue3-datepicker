@@ -7,9 +7,10 @@
       :placeholder="placeholder"
       :disabled="disabled"
       :tabindex="disabled ? -1 : 0"
-      @blur="renderView()"
-      @focus="renderView(startingView)"
-      @click="renderView(startingView)"
+      @blur="onInputBlur"
+      @focus="onInputFocus"
+      @click="onInputClick"
+      @change="onInputChange"
     />
     <year-picker
       v-show="viewShown === 'year'"
@@ -51,6 +52,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed, watchEffect, PropType } from 'vue'
+import { useField } from 'vee-validate'
 import { parse, isValid, setYear, lightFormat } from 'date-fns'
 import YearPicker from './YearPicker.vue'
 import MonthPicker from './MonthPicker.vue'
@@ -63,6 +65,20 @@ export default defineComponent({
     DayPicker,
   },
   props: {
+    /**
+     * Field name for validation errors
+     */
+    name: {
+      type: String,
+      default: 'datepicker',
+    },
+    /**
+     * Validation rules
+     */
+    rules: {
+      type: String,
+      default: 'true',
+    },
     placeholder: {
       type: String,
       default: '',
@@ -169,7 +185,10 @@ export default defineComponent({
   },
   setup(props, { emit }) {
     const viewShown = ref('none' as 'year' | 'month' | 'day' | 'none')
-    const pageDate = ref(new Date())
+    const {
+      value: pageDate,
+      handleBlur, handleChange
+    } = useField(props.name, props.rules)
 
     const input = ref('')
     watchEffect(() => {
@@ -206,11 +225,34 @@ export default defineComponent({
 
       viewShown.value = 'none'
     }
+    const onInputBlur = () => {
+      emit('blur')
+
+      handleBlur()
+
+      return renderView()
+    }
+    const onInputFocus = () => {
+      emit('focus')
+
+      return renderView(props.startingView)
+    }
+    const onInputClick = () => {
+      emit('click')
+
+      return renderView(props.startingView)
+    }
+    const onInputChange = (e: Event) => {
+      handleChange(e)
+    }
 
     return {
       input,
       pageDate,
       renderView,
+      onInputBlur,
+      onInputFocus,
+      onInputClick,
       selectYear,
       selectMonth,
       selectDay,

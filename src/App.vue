@@ -2,6 +2,8 @@
   <img alt="Vue logo" src="./assets/logo.png" />
   <div>
     <datepicker
+      name="mainPicker"
+      rules="validate"
       class="picker"
       v-model="selected"
       :locale="locale"
@@ -30,6 +32,14 @@
       :locale="locale"
       disabled
       placeholder="disabled"
+    />
+  </div>
+  <div>
+    <datepicker
+      class="picker"
+      v-model="restrict"
+      :locale="locale"
+      placeholder="restrict"
     />
   </div>
   <div>
