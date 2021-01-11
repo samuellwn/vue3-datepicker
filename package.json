@@ -9,10 +9,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/icehaunter/vue3-datepicker.git"
+    "url": "https://github.com/samuellwn/vue3-datepicker.git"
   },
   "bugs": {
-    "url": "https://github.com/icehaunter/vue3-datepicker/issues"
+    "url": "https://github.com/samuellwn/vue3-datepicker/issues"
   },
   "private": false,
   "name": "vue3-datepicker",
