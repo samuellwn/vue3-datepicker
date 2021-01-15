@@ -7,7 +7,7 @@
       :placeholder="placeholder"
       :disabled="disabled"
       :tabindex="disabled ? -1 : 0"
-      @blur="renderView()"
+      @blur="onBlur"
       @focus="renderView(startingView)"
       @click="renderView(startingView)"
     />
@@ -186,6 +186,11 @@ export default defineComponent({
             ? lightFormat(props.modelValue, props.inputFormat)
             : '')
     )
+
+    const onBlur = () => {
+      renderView()
+      emit('blur')
+    }
 
     const renderView = (view: typeof viewShown.value = 'none') => {
       if (!props.disabled) viewShown.value = view
