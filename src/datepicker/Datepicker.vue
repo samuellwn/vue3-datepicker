@@ -7,7 +7,7 @@
       :placeholder="placeholder"
       :disabled="disabled"
       :tabindex="disabled ? -1 : 0"
-      @blur="renderView()"
+      @blur="onBlur"
       @focus="renderView(startingView)"
       @click="renderView(startingView)"
     />
@@ -187,6 +187,11 @@ export default defineComponent({
             : '')
     )
 
+    const onBlur = () => {
+      renderView()
+      emit('blur')
+    }
+
     const renderView = (view: typeof viewShown.value = 'none') => {
       if (!props.disabled) viewShown.value = view
     }
@@ -210,6 +215,7 @@ export default defineComponent({
     return {
       input,
       pageDate,
+      onBlur,
       renderView,
       selectYear,
       selectMonth,
